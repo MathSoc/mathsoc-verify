@@ -39,6 +39,7 @@ async function isValidId(watiam, interaction) {
                 ErrorLog(`Failed to validate ${watiam}!`);
                 ErrorLog(err);
                 reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
+                return;
             }
             const opts = {
                 filter: `(mailLocalAddress=${email})`,
@@ -52,6 +53,7 @@ async function isValidId(watiam, interaction) {
                     ErrorLog('Hint: is there a connection issue with the LDAP server?');
                     ErrorLog(err);
                     reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
+                    isResolved = true;
                 }
                 res.on('searchEntry', entry => {
                     // Convert possible alias to true WatIAM ID for email and storage.
@@ -59,16 +61,20 @@ async function isValidId(watiam, interaction) {
                     resolve(entry.objectName.split(',')[0].substring(4));
                 });
                 res.on('error', err => {
+                    if (isResolved) return;
                     ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interation.user.id} (${interaction.user.tag}).`);
                     ErrorLog('Hint: was the query malformed?');
                     ErrorLog(err);
                     reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
+                    isResolved = true;
                 });
                 res.on('connectError', err => {
+                    if (isResolved) return;
                     ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interation.user.id} (${interaction.user.tag}).`);
                     ErrorLog('Hint: was the query malformed?');
                     ErrorLog(err);
                     reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
+                    isResolved = true;
                 });
                 res.on('end', result => {
                     InfoLog(`Finished LDAP query with status ${result.status}.`);
@@ -84,6 +90,7 @@ async function isValidId(watiam, interaction) {
         });
         ldapClient.unbind((err) => {
             ErrorLog('Trouble running ldapClient.unbind');
+            ErrorLog(err);
         });
     });
     let pr = await prom;
