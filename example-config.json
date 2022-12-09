@@ -1,0 +1,8 @@
+{
+    "db_path": "./users.db",
+    "token": "your_discord_bot_token",
+    "sendinblue": "your_sendinblue_token",
+    "clientId": "your_bot_client_id",
+    "serverId": "main server (e.g. the MathSoc server's ID)",
+    "templateId": "sendinblue template id (int, not string)"
+}
