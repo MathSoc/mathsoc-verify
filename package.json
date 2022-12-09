@@ -1,0 +1,22 @@
+{
+  "name": "MathSoc Verify",
+  "version": "1.0.0",
+  "description": "Discord bot for WatIAM verification on MathSoc-affiliated servers",
+  "main": "main.js",
+  "author": "Evan Girardin",
+  "scripts": {
+      "deploy": "node deploy-cmds.js",
+      "start": "node main.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "ldapjs": "^2.3.3",
+    "path": "^0.12.7",
+    "sib-api-v3-sdk": "^8.4.2",
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.2",
+    "winston": "^3.8.2"
+  }
+}
