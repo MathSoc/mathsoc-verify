@@ -87,11 +87,7 @@ async function isValidId(watiam, interaction) {
                     }
                 });
             });
-            ldapClient.unbind((err) => {
-                ErrorLog('Trouble running ldapClient.unbind');
-                ErrorLog(err);
-            });
-            ldapClient.destroy();
+            ldapClient.unbind();
         });
     });
     let pr = await prom;
