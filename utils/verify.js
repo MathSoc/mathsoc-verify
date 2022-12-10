@@ -62,7 +62,7 @@ async function isValidId(watiam, interaction) {
                 });
                 res.on('error', err => {
                     if (isResolved) return;
-                    ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interation.user.id} (${interaction.user.tag}).`);
+                    ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interaction.user.id} (${interaction.user.tag}).`);
                     ErrorLog('Hint: was the query malformed?');
                     ErrorLog(err);
                     reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
@@ -70,7 +70,7 @@ async function isValidId(watiam, interaction) {
                 });
                 res.on('connectError', err => {
                     if (isResolved) return;
-                    ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interation.user.id} (${interaction.user.tag}).`);
+                    ErrorLog(`Trouble validating WatIAM ID ${watiam} given by ${interaction.user.id} (${interaction.user.tag}).`);
                     ErrorLog('Hint: was the query malformed?');
                     ErrorLog(err);
                     reject(new Error('Couldn\'t validate the given WatIAM ID. Please contact an administrator.'));
