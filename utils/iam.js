@@ -34,6 +34,10 @@ async function storeAndEmail(watiam, db, interaction) {
     };
 
     try {
+        let existing = await db.get(`SELECT * FROM usercodes WHERE userid = ?`, [interaction.user.id]);
+        if (existing) {
+            code = existing[0].code;
+        }
         await db.run(`
             INSERT INTO
                 usercodes(userid, watiam, code)
