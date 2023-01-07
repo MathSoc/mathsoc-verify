@@ -34,6 +34,11 @@ async function storeAndEmail(watiam, db, interaction) {
     };
 
     try {
+        await db.run(`
+	    DELETE FROM
+                usercodes
+	    WHERE
+                expires_at <= DATETIME('now', '-15 minutes')`);
         let existing = await db.get(`SELECT * FROM usercodes WHERE userid = ?`, [interaction.user.id]);
         if (existing) {
             code = existing[0].code;
