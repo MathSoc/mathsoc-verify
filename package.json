@@ -6,7 +6,7 @@
   "author": "Evan Girardin",
   "scripts": {
     "deploy": "node deploy-cmds.js",
-    "start": "npx pm2 start main.js"
+    "start": "npx pm2 start --no-daemon main.js"
   },
   "dependencies": {
     "discord.js": "^14.7.1",
