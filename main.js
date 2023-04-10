@@ -34,6 +34,7 @@ for (const file of commandFiles) {
 }
 
 client.on(Events.GuildMemberAdd, async member => {
+    try {
     const db = await sqlite.open({
         filename: db_path,
         driver: sqlite3.Database
@@ -49,10 +50,15 @@ client.on(Events.GuildMemberAdd, async member => {
         InfoLog(`On ${member.guild.name}, user ${member.id} (${member.tag}) is already verified as ${row.watiam}. Giving roles...`);
         member.roles.add(interaction.guild.roles.cache.find(role => role.name === 'Verified'));
     }
+    } catch (e) {
+        ErrorLog("CRITICAL: Something went wrong after Events.GuildMemberAdd!")
+        ErrorLog(e);
+    }
 });
 
 // Command handler
 client.on(Events.InteractionCreate, async interaction => {
+    try {
     if (!interaction.isChatInputCommand()) return;
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) {
@@ -64,10 +70,15 @@ client.on(Events.InteractionCreate, async interaction => {
         ErrorLog(e);
         await interaction.reply({content: 'There was an error processing your command.', ephemeral: true});
     }
+    } catch (e) {
+        ErrorLog(e);
+        await interaction.reply({content: 'There was an error responding to the modal interaction.', ephemeral: true});
+    }
 });
 
 // Button handler
 client.on(Events.InteractionCreate, async interaction => {
+    try {
     if (!interaction.isButton) return;
     if (interaction.customId === 'watiamButton' || interaction.customId === 'verifyButton') {
         const {userExistsInDB} = require('./utils/verify.js');
@@ -120,10 +131,15 @@ client.on(Events.InteractionCreate, async interaction => {
                 )
         );
     }
+    } catch (e) {
+        ErrorLog(e);
+        await interaction.reply({content: 'There was an error responding to the button interaction.', ephemeral: true});
+    }
 });
 
 // Modal handler
 client.on(Events.InteractionCreate, async interaction => {
+    try {
     const {verify} = require('./utils/verify.js')
     const {iam} = require('./utils/iam.js')
     if (!interaction.isModalSubmit()) return;
@@ -142,6 +158,10 @@ client.on(Events.InteractionCreate, async interaction => {
             ErrorLog(e);
             await interaction.reply({content: 'There was an error responding to the modal interaction.', ephemeral: true});
         }
+    }
+    } catch (e) {
+        ErrorLog(e);
+        await interaction.reply({content: 'There was an error responding to the modal interaction.', ephemeral: true});
     }
 });
 
